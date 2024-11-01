@@ -10,4 +10,10 @@ services:
       CHROMA_HOST: 0.0.0.0
       CHROMA_PORT: 8000
     volumes:
-      - ./chroma_data:/data   # Persist data between container restarts
+      - ./chroma_data:/data
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama_data:/data
