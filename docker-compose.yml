@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: chroma-db
+    ports:
+      - "8000:8000"
+    environment:
+      CHROMA_HOST: 0.0.0.0
+      CHROMA_PORT: 8000
+    volumes:
+      - ./chroma_data:/data   # Persist data between container restarts
