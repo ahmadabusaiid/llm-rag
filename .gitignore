@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# folders
 venv/
 data/
 chroma_data/
+ollama/
+
+# files
+test.ipynb
+test_con.py

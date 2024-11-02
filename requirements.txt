@@ -2,10 +2,9 @@ numpy
 pandas
 requests
 langchain
-langchain_community
 ipykernel
 boto3
 pypdf
 pytest
-openai
+ollama
 # chromadb

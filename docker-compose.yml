@@ -1,19 +1,47 @@
 version: '3.8'
-
 services:
-  chromadb:
-    image: chromadb/chroma:latest
-    container_name: chroma-db
-    ports:
-      - "8000:8000"
-    environment:
-      CHROMA_HOST: 0.0.0.0
-      CHROMA_PORT: 8000
-    volumes:
-      - ./chroma_data:/data
   ollama:
     image: ollama/ollama:latest
     ports:
-      - "11434:11434"
+      - 11434:11434
     volumes:
-      - ./ollama_data:/data
+      - .:/code
+      - ./ollama/ollama:/root/.ollama
+      - ./ollama/start_ollama.sh:/start_ollama.sh
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: always
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - ollama-docker
+    entrypoint: ["/usr/bin/bash", "/start_ollama.sh"]
+
+  ollama-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: ollama-webui
+    volumes:
+      - ./ollama/ollama-webui:/app/backend/data
+    depends_on:
+      - ollama
+    ports:
+      - 8080:8080
+    environment: 
+      # https://docs.openwebui.com/getting-started/env-configuration#default_models
+      - OLLAMA_BASE_URLS=http://host.docker.internal:11434
+      - ENV=dev
+      - WEBUI_AUTH=False
+      - WEBUI_NAME=llm-rag
+      - WEBUI_URL=http://localhost:8080
+      - WEBUI_SECRET_KEY=secret
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+    networks:
+      - ollama-docker
+
+networks:
+  ollama-docker:
+    external: false
