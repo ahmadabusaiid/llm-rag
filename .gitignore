@@ -6,9 +6,8 @@ __pycache__/
 # folders
 venv/
 data/
-chroma_data/
+chroma_db/
 ollama/
 
 # files
 test.ipynb
-test_con.py
