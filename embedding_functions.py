@@ -16,3 +16,4 @@ class OllamaEmbeddingFunction:
             return [np.array(ollama.embeddings(model=self.model, prompt=item)["embedding"]) for item in input]
         else:
             raise ValueError("OllamaEmbeddingFunction expects a string or a list of strings as input.")
+            

@@ -26,24 +26,36 @@ def main():
 
 
 def query_rag(query_text, config):
-    print(query_text)
     embedding_func = OllamaEmbeddingFunction(config=config)
     chroma_client = chromadb.HttpClient(host='localhost', port=8000)
+    ollama_client = ollama.Client(host='http://localhost:11434')
+    
     db = chroma_client.get_collection(
         name="col_1",
         embedding_function=embedding_func
     )
-    # results = db.similarity_search_with_score(query_text, k=5)
     results = db.query(
         query_texts=[query_text],
         n_results=5
     )
 
-    # context_text = "\n\n--\n\n".join([doc.page.content for doc, _score in results])
     context_text = "\n\n--\n\n".join([result for i, result in enumerate(results['documents'][0])])
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
     prompt = prompt_template.format(context=context_text, question=query_text)
-    print(prompt)
+    response = ollama_client.chat(
+        model=config.CHAT.MODEL, 
+        messages=[
+            {
+                'role': 'user',
+                'content': prompt,
+            }
+        ]
+    )
+
+    print("-----")
+    print(response["message"]["content"])
+    print("-----")
+    print("Sources:", results["ids"])
 
 
 if __name__ == "__main__":
