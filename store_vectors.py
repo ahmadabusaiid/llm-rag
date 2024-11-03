@@ -1,15 +1,13 @@
 import os
 import argparse
 import shutil
-import ollama
 import chromadb
+from config import load_config
 from langchain.schema.document import Document
 from embedding_functions import OllamaEmbeddingFunction
 from langchain_community.document_loaders import PyPDFDirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-DATA_PATH = "data"
-CHROMA_PATH = "chroma_db"
 
 def main():
     """
@@ -19,26 +17,19 @@ def main():
     parser.add_argument("--reset", action="store_true", help="Reset the database.")
     args = parser.parse_args()
 
+    config = load_config()
     chroma_client = chromadb.HttpClient(host='localhost', port=8000)
-    embedding_function = OllamaEmbeddingFunction()
+    embedding_function = OllamaEmbeddingFunction(config=config)
 
     if args.reset:
-        clear_database()
+        clear_database(path=config.EMBEDDING.STORAGE_PATH)
 
-    documents = load_docs()
+    documents = load_docs(path=config.DATA.STORAGE_PATH)
     chunks = split_docs(documents)
     load_to_db(chroma_client, chunks, embedding_function)
 
 
-def get_embedding(input, model="llama3.2"):
-    """
-    Fetches embeddings using the Ollama model.
-    """
-    embedding = ollama.embeddings(model=model, prompt=input)
-    return embedding
-
-
-def load_docs(path=DATA_PATH):
+def load_docs(path):
     """
     Loads PDF documents from a directory.
     """
@@ -115,12 +106,12 @@ def load_to_db(chroma_client, chunks, embedding_func):
         print("No new documents to add.")
 
 
-def clear_database():
+def clear_database(path):
     """
     Removes the Chroma database directory to reset it.
     """
-    if os.path.exists(CHROMA_PATH):
-        shutil.rmtree(CHROMA_PATH)
+    if os.path.exists(path):
+        shutil.rmtree(path)
         print("Cleared Chroma database.")
 
 

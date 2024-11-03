@@ -1,10 +1,10 @@
 import ollama
 import numpy as np
 
-
 class OllamaEmbeddingFunction:
-    def __init__(self, model="llama3.2"):
-        self.model = model
+    def __init__(self, config):
+        self.config = config
+        self.model = self.config.EMBEDDING.MODEL
 
     def __call__(self, input):
         """

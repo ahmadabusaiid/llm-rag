@@ -4,7 +4,12 @@ pid=$!
 
 sleep 10
 
-echo "Pulling models"
-ollama pull qwen:1.8b
+EMBEDDING_MODEL=$(yq eval '.EMBEDDING.MODEL' ../config.yml)
+CHAT_MODEL=$(yq eval '.CHAT.MODEL' ../config.yml)
+
+echo "Pulling embedding model: $EMBEDDING_MODEL"
+ollama pull "$EMBEDDING_MODEL"
+echo "Pulling chat model: $CHAT_MODEL"
+ollama pull "$CHAT_MODEL"
 
 wait $pid

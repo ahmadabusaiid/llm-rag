@@ -1,5 +1,4 @@
 numpy
-pandas
 requests
 langchain
 boto3
@@ -7,3 +6,5 @@ pypdf
 pytest
 ollama
 chromadb
+yacs
+yq

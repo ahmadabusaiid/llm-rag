@@ -1,0 +1,7 @@
+DATA:
+  STORAGE_PATH: "data"
+EMBEDDING:
+  MODEL: "llama3.2"
+  STORAGE_PATH: "chroma_db"
+CHAT:
+  MODEL: "llama3.2"
