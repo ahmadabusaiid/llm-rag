@@ -7,7 +7,7 @@ __pycache__/
 venv/
 data/
 chroma_db/
-ollama/
+ollama/ollama*
 
 # files
 test.ipynb
