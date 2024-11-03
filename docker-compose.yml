@@ -16,7 +16,7 @@ services:
       - OLLAMA_KEEP_ALIVE=24h
       - OLLAMA_HOST=0.0.0.0
     networks:
-      - ollama-docker
+      - llm-rag-docker
     entrypoint: ["/usr/bin/bash", "/start_ollama.sh"]
 
   ollama-webui:
@@ -40,7 +40,7 @@ services:
       - host.docker.internal:host-gateway
     restart: unless-stopped
     networks:
-      - ollama-docker
+      - llm-rag-docker
 
   chromadb:
     image: chromadb/chroma:latest
@@ -48,11 +48,18 @@ services:
     ports:
       - "8000:8000"
     environment:
-      CHROMA_HOST: 0.0.0.0
-      CHROMA_PORT: 8000
+      - IS_PERSISTENT=TRUE
+      - CHROMA_HOST=0.0.0.0
+      - CHROMA_PORT=8000
     volumes:
-      - ./chroma_db:/data
+      - ./chroma_db:/chroma/chroma
+    networks:
+      - llm-rag-docker
+
+volumes:
+  chroma_db:
+    driver: local
 
 networks:
-  ollama-docker:
+  llm-rag-docker:
     external: false
