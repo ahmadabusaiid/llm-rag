@@ -5,5 +5,7 @@ EMBEDDING:
   STORAGE_PATH: "chroma_db"
 CHUNKING:
   MODEL: "all-MiniLM-L6-v2"
+  SIZE: 800
+  OVERLAP: 80
 CHAT:
   MODEL: "llama3.2:3b"

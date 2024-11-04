@@ -14,6 +14,8 @@ cfg.EMBEDDING.STORAGE_PATH = ""
 # Chunking configs
 cfg.CHUNKING = CN()
 cfg.CHUNKING.MODEL = ""
+cfg.CHUNKING.SIZE = 0
+cfg.CHUNKING.OVERLAP = 0
 
 # Chatting configs
 cfg.CHAT = CN()

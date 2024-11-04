@@ -43,8 +43,8 @@ def split_docs(docs: list[Document], config):
     """
     txt_splitter = SentenceTransformersTokenTextSplitter(
         model_name=f"sentence-transformers/{config.CHUNKING.MODEL}",
-        chunk_size=800,
-        chunk_overlap=80,
+        chunk_size=config.CHUNKING.SIZE,
+        chunk_overlap=config.CHUNKING.OVERLAP,
         length_function=len,
     )
     return txt_splitter.split_documents(docs)
