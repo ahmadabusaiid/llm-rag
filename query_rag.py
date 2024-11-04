@@ -16,6 +16,9 @@ Answer the question based on the above context: {question}
 """
 
 def main():
+    """
+    Prompts the LLM model to answer user query with RAG based context.
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("query_text", type=str, help="The query text.")
     args = parser.parse_args()
@@ -26,6 +29,9 @@ def main():
 
 
 def query_rag(query_text, config):
+    """
+    Performs similarity search with ChromaDB embeddings, for RAG based query.
+    """
     embedding_func = OllamaEmbeddingFunction(config=config)
     chroma_client = chromadb.HttpClient(host='localhost', port=8000)
     ollama_client = ollama.Client(host='http://localhost:11434')
