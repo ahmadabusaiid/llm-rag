@@ -8,3 +8,4 @@ ollama
 chromadb
 yacs
 yq
+sentence-transformers

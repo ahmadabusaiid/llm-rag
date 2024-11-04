@@ -11,9 +11,14 @@ cfg.EMBEDDING = CN()
 cfg.EMBEDDING.MODEL = ""
 cfg.EMBEDDING.STORAGE_PATH = ""
 
+# Chunking configs
+cfg.CHUNKING = CN()
+cfg.CHUNKING.MODEL = ""
+
 # Chatting configs
 cfg.CHAT = CN()
 cfg.CHAT.MODEL = ""
+
 
 def load_config(yaml_file="./config.yml"):
     """

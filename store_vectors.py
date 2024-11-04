@@ -6,7 +6,7 @@ from config import load_config
 from langchain.schema.document import Document
 from embedding_functions import OllamaEmbeddingFunction
 from langchain_community.document_loaders import PyPDFDirectoryLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters import SentenceTransformersTokenTextSplitter
 
 
 def main():
@@ -25,8 +25,8 @@ def main():
         clear_database(path=config.EMBEDDING.STORAGE_PATH)
 
     documents = load_docs(path=config.DATA.STORAGE_PATH)
-    chunks = split_docs(documents)
-    # load_to_db(chroma_client, chunks, embedding_function)
+    chunks = split_docs(documents, config)
+    load_to_db(chroma_client, chunks, embedding_function)
 
 
 def load_docs(path):
@@ -37,15 +37,15 @@ def load_docs(path):
     return doc_loader.load()
 
 
-def split_docs(docs: list[Document]):
+def split_docs(docs: list[Document], config):
     """
-    Splits documents into smaller chunks with overlap for context retention.
+    Splits documents semantically into smaller chunks with overlap for context retention.
     """
-    txt_splitter = RecursiveCharacterTextSplitter(
+    txt_splitter = SentenceTransformersTokenTextSplitter(
+        model_name=f"sentence-transformers/{config.CHUNKING.MODEL}",
         chunk_size=800,
         chunk_overlap=80,
         length_function=len,
-        is_separator_regex=False,
     )
     return txt_splitter.split_documents(docs)
 
