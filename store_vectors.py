@@ -26,7 +26,7 @@ def main():
 
     documents = load_docs(path=config.DATA.STORAGE_PATH)
     chunks = split_docs(documents)
-    load_to_db(chroma_client, chunks, embedding_function)
+    # load_to_db(chroma_client, chunks, embedding_function)
 
 
 def load_docs(path):
@@ -79,7 +79,8 @@ def load_to_db(chroma_client, chunks, embedding_func):
     """
     db = chroma_client.get_or_create_collection(
         name="col_1",
-        embedding_function=embedding_func
+        embedding_function=embedding_func,
+        metadata={"hnsw:space": "cosine"},
     )
     chunks_with_ids = calculate_chunk_ids(chunks)
 

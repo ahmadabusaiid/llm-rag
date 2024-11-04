@@ -9,6 +9,7 @@ services:
       - .:/code
       - ./ollama/ollama:/root/.ollama
       - ./ollama/start_ollama.sh:/start_ollama.sh
+      - ./config.yml:/config.yml
     container_name: ollama
     pull_policy: always
     tty: true
