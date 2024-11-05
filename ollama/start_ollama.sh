@@ -1,6 +1,3 @@
-# apt-get update
-# apt-get install -y yq jq
-
 export PATH="$PATH:/root/.local/bin"
 
 apt-get update
