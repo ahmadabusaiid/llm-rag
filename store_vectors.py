@@ -14,15 +14,16 @@ def main():
     Loads the data and stores the vector embeddings into ChromaDB.
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument("--reset", action="store_true", help="Reset the database.")
+    parser.add_argument("--rm_col", type=str, help="Name of the collection to remove from the database.")
+
     args = parser.parse_args()
 
     config = load_config()
     chroma_client = chromadb.HttpClient(host='localhost', port=8000)
     embedding_function = OllamaEmbeddingFunction(config=config)
 
-    if args.reset:
-        clear_database(path=config.EMBEDDING.STORAGE_PATH)
+    if args.rm_col is not None:
+        remove_collection(chroma_client, args.rm_col)
 
     documents = load_docs(path=config.DATA.STORAGE_PATH)
     chunks = split_docs(documents, config)
@@ -107,13 +108,12 @@ def load_to_db(chroma_client, chunks, embedding_func):
         print("No new documents to add.")
 
 
-def clear_database(path):
+def remove_collection(client, col_name):
     """
-    Removes the Chroma database directory to reset it.
+    Removes the specified ChromaDB collection.
     """
-    if os.path.exists(path):
-        shutil.rmtree(path)
-        print("Cleared Chroma database.")
+    client.delete_collection(col_name)
+    print(f"Removed ChromaDB collection {col_name}.")
 
 
 
