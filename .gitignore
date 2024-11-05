@@ -5,7 +5,7 @@ __pycache__/
 
 # folders
 venv/
-data/*
+# data/*
 chroma_db/
 ollama/ollama*
 
