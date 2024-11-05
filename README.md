@@ -1,12 +1,18 @@
 # Semantic RAG with LLM
 
 This repository provides a containerized semantic RAG pipeline with LLMs.
-The data expected are pdfs of any specific specialised topic that is then embedded and stored in ChromaDB with LangChain. The LLM model used to get context and chat with, is hosted on Ollama.
+The data expected are pdfs of any specific specialised topic that is then embedded and stored in ChromaDB with LangChain. The LLM model used to get context and chat with, is hosted on Ollama. The current config used is summarized below:
+- Chunk Splitting Method: LangChain Semantic Text Splitter (all-MiniLM-L6-v2 Sentence Transformer)
+- Embedding Model: all-MiniLM-L6-v2
+- Vector DB: ChromaDB
+- Similarity Search: Cosine Similarity
+- LLM Chat: LLama 3.2 (3b)
 
 ## 1. Steps to setup RAG LLM (assuming you have Docker):
 1. Clone repo
     ```bash
     git clone https://github.com/ahmadabusaiid/semantic-rag-llm.git
+    cd semantic-rag-llm
     ```
 
 2. Setup environment and install requirements
@@ -46,7 +52,7 @@ The data expected are pdfs of any specific specialised topic that is then embedd
 
 ## 2. Modifying configurations
 - YACS config system is used to manage changes for models/embeddings/chunking etc.
-- You can edit the `config.YAML` file to choose your own models etc. Please remember to check documentations on which models are available first, and whether your system can handle it.
+- You can easily edit the `config.yml` file to choose your own models etc. Please remember to check documentations on which models are available first, and whether your system can handle it.
 
 
 
