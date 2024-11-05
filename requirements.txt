@@ -6,3 +6,4 @@ pypdf==5.1.0
 ollama==0.3.3
 chromadb==0.5.17
 sentence-transformers==3.2.1
+yacs==0.1.8
